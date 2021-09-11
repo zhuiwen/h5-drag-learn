@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url(./images/bg.jpg) no-repeat;
+      background-position: 70% 65%;
+    }
+
+    .show {
+      width: 500px;
+    }
+
+    .show h1 {
+      color: #ffb8c6;
+    }
+
+    .tshirt {
+      position: relative;
+    }
+
+    .tshirt .t-shirt {
+      width: 500px;
+      height: 600px;
+    }
+
+    .empty img {
+      width: 200px;
+      height: 200px;
+    }
+
+    .patterns {
+      margin-top: 80px;
+      width: 250px;
+      height: 600px;
+      display: flex;
+      overflow-y: scroll;
+      justify-content: center;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .patterns img {
+      padding: 10px;
+      height: 200px;
+      width: 200px;
+      object-fit: contain;
+      transition: all .5s;
+    }
+
+    .empty {
+      position: absolute;
+      top: 300px;
+      left: 150px;
+      width: 200px;
+      height: 200px;
+      border: 5px solid #ffb8c6;
+      transition: all .5s;
+    }
+  </style>
+</head>
+
+<body>
+  <section class="show">
+    <h1>拖动你喜欢的图案到衣服上吧</h1>
+    <div class="tshirt">
+      <img draggable="false" class="t-shirt" src="./images/white.jpg" alt="no!不能拖!!">
+      <div class="empty"></div>
+    </div>
+  </section>
+  <section class="patterns">
+    <img draggable="true" src="./images/1.jpg" alt="code">
+    <img draggable="true" src="./images/2.jpg" alt="planet">
+    <img draggable="true" src="./images/3.jpg" alt="superman">
+    <img draggable="true" src="./images/4.jpg" alt="world">
+    <img draggable="true" src="./images/5.jpg" alt="pole">
+    <img draggable="true" src="./images/6.jpg" alt="cosmic-man">
+    <img draggable="true" src="./images/7.jpg" alt="mountain">
+  </section>
+  <!-- <script src="./draggable.js"></script> -->
+  <script type='text/javascript'>
+    // 拖拽的
+    const empty = document.querySelector('div.empty');
+    const h1 = document.querySelector('h1');
+    // 当前拖拽的对象
+    let drapTarget = null;
+    let name = '';
+
+    //  拖拽开始，为目标元素添加边框
+    document.addEventListener('dragstart', e => {
+      e.target.style.border = "5px dashed red";
+      drapTarget = e.target;
+      name = e.target.alt;
+    }, false)
+    // 拖拽进行时
+    document.addEventListener('drag', e => {
+      // e.target.style.border = "5px dashed red"
+      // empty.target.style.border = '5px dashed red'
+    }, false)
+
+    //  进入拖拽的目标
+    empty.addEventListener('dragenter', e => {
+      console.log(222)
+      if (empty.firstChild) {
+        // empty.removeChild(empty.firstChild);
+      }
+      e.target.style.border = '5px dashed red'
+      h1.innerHTML = name;
+      h1.style.color = 'red';
+    }, false)
+    //  拖拽结束，移除边框
+    document.addEventListener('dragend', e => {
+      e.target.style.border = "none"
+      empty.style.border = '5px solid #ffb8c6'
+    }, false)
+    // 鼠标松开，把拖拽的目标元素放入目标区域, 注意要取消drop和dragover事件的默认行为才有效果
+    empty.addEventListener('drop', e => {
+      e.preventDefault()
+      // 克隆目标元素
+      const node = drapTarget.cloneNode()
+      node.style.border = 'none'
+      e.target.appendChild(node)
+      console.log('appendChild')
+    }, false)
+    // 当被拖动元素在目的地元素内时触发
+    empty.addEventListener('dragover', e => {
+      e.preventDefault()
+    }, false)
+  </script>
+</body>
+
+</html>
